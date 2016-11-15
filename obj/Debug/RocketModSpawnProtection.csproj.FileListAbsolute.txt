@@ -1,0 +1,11 @@
+C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\bin\Debug\RocketModSpawnProtection.dll
+C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\bin\Debug\RocketModSpawnProtection.pdb
+C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\bin\Debug\Assembly-CSharp-firstpass.dll
+C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\bin\Debug\Assembly-CSharp.dll
+C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\bin\Debug\Rocket.API.dll
+C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\bin\Debug\Rocket.Core.dll
+C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\bin\Debug\Rocket.Unturned.dll
+C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\bin\Debug\UnityEngine.dll
+C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\obj\Debug\RocketModSpawnProtection.csprojResolveAssemblyReference.cache
+C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\obj\Debug\RocketModSpawnProtection.dll
+C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\obj\Debug\RocketModSpawnProtection.pdb
