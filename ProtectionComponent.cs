@@ -36,8 +36,11 @@ namespace RocketModSpawnProtection
         {
             if (!protectionEnabled) return;
 
+            elapsedProtectionTime = getTotalDateTimeSeconds(protStart);
+
             if (!Player.Features.GodMode) Player.Features.GodMode = true;
-            if (giveVanish && !vanishExpired && !Player.Features.VanishMode) Player.Features.VanishMode = true;
+            if (giveVanish && !vanishExpired && !Player.Features.VanishMode && elapsedProtectionTime >= 1) 
+                Player.Features.VanishMode = true;
 
             if (!sentProtStartedMsg)
             {
@@ -60,8 +63,6 @@ namespace RocketModSpawnProtection
                 lastVehHealth = Player.CurrentVehicle.health;
                 passengerCount = 0;
             }
-
-            elapsedProtectionTime = getTotalDateTimeSeconds(protStart);
 
             if (!vanishExpired && elapsedProtectionTime >= maxVanishTime)
             {
