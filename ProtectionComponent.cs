@@ -16,8 +16,8 @@ namespace RocketModSpawnProtection
         bool equiptedItem = false;
         bool sentProtStartedMsg = false;
         bool vanishExpired = false;
-        bool giveVanish;
-        bool cancelOnEquip;
+        //bool giveVanish;
+        //bool cancelOnEquip;
 
         DateTime protStart;
 
@@ -26,25 +26,26 @@ namespace RocketModSpawnProtection
         //float disableVanishDist;
 
         int passengerCount = 0;
-        int maxProtTime;
-        int maxVanishTime;
+        //int maxProtTime;
+        //int maxVanishTime;
         int elapsedProtectionTime = 0;
 
         //Vector3 spawnLocation;
 
         public void Update()
         {
-            if (!protectionEnabled) return;
+            if (!protectionEnabled && !pluginUnloaded()) return;
 
+            var config = getConfig();
             elapsedProtectionTime = getTotalDateTimeSeconds(protStart);
 
             if (!Player.Features.GodMode) Player.Features.GodMode = true;
-            if (giveVanish && !vanishExpired && !Player.Features.VanishMode && elapsedProtectionTime >= 1) 
+            if (config.GiveVanishWhileProtected && !vanishExpired && !Player.Features.VanishMode && elapsedProtectionTime >= 1) 
                 Player.Features.VanishMode = true;
 
             if (!sentProtStartedMsg)
             {
-                UnturnedChat.Say(Player, spawnProtection.Instance.Translate("prot_started", maxProtTime));
+                UnturnedChat.Say(Player, spawnProtection.Instance.Translate("prot_started", config.ProtectionTime));
                 sentProtStartedMsg = true;
             }
 
@@ -64,18 +65,18 @@ namespace RocketModSpawnProtection
                 passengerCount = 0;
             }
 
-            if (!vanishExpired && elapsedProtectionTime >= maxVanishTime)
+            if (config.GiveVanishWhileProtected && !vanishExpired && elapsedProtectionTime >= config.MaxProtectionVanishTime)
             {
                 Player.Features.VanishMode = false;
                 vanishExpired = true;
             }
 
-            if (cancelOnEquip && Player.Player.equipment.asset != null)
+            if (config.CancelProtectionOnEquip && Player.Player.equipment.asset != null)
             {
                 equiptedItem = true;
             }
 
-            if (elapsedProtectionTime >= maxProtTime)
+            if (elapsedProtectionTime >= config.ProtectionTime)
             {
                 protectionEnded = true;
             }
@@ -93,6 +94,7 @@ namespace RocketModSpawnProtection
             }
         }
 
+        /*
         protected override void Load()
         {
             ResetVariables();
@@ -102,7 +104,9 @@ namespace RocketModSpawnProtection
             maxVanishTime = spawnProtection.Instance.Configuration.Instance.MaxProtectionVanishTime;
             //disableVanishDist = spawnProtection.Instance.Configuration.Instance.MaxVanishDistFromSpawn;
             cancelOnEquip = spawnProtection.Instance.Configuration.Instance.CancelProtectionOnEquip;
+            log(string.Format("{0} {1} {2} {3}", giveVanish, cancelOnEquip, maxProtTime, maxVanishTime));
         }
+        */
 
         public void StartProtection()
         {
@@ -118,7 +122,7 @@ namespace RocketModSpawnProtection
             ResetVariables();
             Player.Features.GodMode = false;
 
-            if (giveVanish && Player.Features.VanishMode)
+            if (getConfig().GiveVanishWhileProtected && Player.Features.VanishMode)
             {
                 Player.Features.VanishMode = false;
             }
@@ -140,6 +144,32 @@ namespace RocketModSpawnProtection
         int getTotalDateTimeSeconds(DateTime input)
         {
             return (int)(DateTime.Now - input).TotalSeconds;
+        }
+
+        void log(string msg)
+        {
+            Rocket.Core.Logging.Logger.Log(msg);
+        }
+
+        SpawnProtectionConfig getConfig()
+        {
+            return spawnProtection.Instance.Configuration.Instance;
+        }
+
+        bool pluginUnloaded()
+        {
+            var state = spawnProtection.Instance.State;
+            switch (state)
+            {
+                case Rocket.API.PluginState.Cancelled:
+                    return true;
+                case Rocket.API.PluginState.Failure:
+                    return true;
+                case Rocket.API.PluginState.Unloaded:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
     }

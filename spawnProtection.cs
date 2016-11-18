@@ -47,24 +47,7 @@ namespace RocketModSpawnProtection
             UnturnedPlayerEvents.OnPlayerRevive -= UnturnedPlayerEvents_OnPlayerRevive;
             U.Events.OnPlayerConnected -= Events_OnPlayerConnected;
 
-            UnturnedPlayer uP;
-            ProtectionComponent component;
-            foreach (var player in Provider.clients)
-            {
-                try
-                {
-                    uP = UnturnedPlayer.FromSteamPlayer(player);
-                    component = uP.GetComponent<ProtectionComponent>();
-
-                    if (component.protectionEnabled)
-                    {
-                        component.StopProtection();
-                        UnturnedChat.Say(uP, Translate("expired"));
-                    }
-                        
-                }
-                catch { }
-            }
+            DisableAllPlayersSpawnProtection();
         }
 
 
@@ -142,6 +125,28 @@ namespace RocketModSpawnProtection
             else
             {
                 UnturnedChat.Say(caller, msg);
+            }
+        }
+
+        void DisableAllPlayersSpawnProtection()
+        {
+            foreach (var player in Provider.clients)
+            {
+                try
+                {
+                    var uP = UnturnedPlayer.FromSteamPlayer(player);
+                    if (uP == null) continue;
+
+                    var component = uP.GetComponent<ProtectionComponent>();
+                    if (component == null) continue;
+
+                    if (component.protectionEnabled)
+                    {
+                        component.StopProtection();
+                        UnturnedChat.Say(uP, Translate("expired"));
+                    }
+                }
+                catch { }
             }
         }
 
