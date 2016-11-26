@@ -23,7 +23,7 @@ namespace RocketModSpawnProtection
             CancelProtectionOnEquip = true;
             GiveProtectionOnJoin = false;
             ProtectionTime = 30;
-            MaxProtectionVanishTime = 3;
+            MaxProtectionVanishTime = 6;
             ProtectionMessageColor = "Yellow";
             CommandMessageColor = "Green";
             //MaxVanishDistFromSpawn = 30;
