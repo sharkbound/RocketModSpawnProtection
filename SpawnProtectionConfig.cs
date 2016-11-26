@@ -10,7 +10,9 @@ namespace RocketModSpawnProtection
     {
         public bool GiveVanishWhileProtected;
         public bool CancelProtectionOnEquip;
+        public bool CancelProtectionIfInVehicleWithOthers;
         public bool GiveProtectionOnJoin;
+        public bool AutoRepairProtectedPlayersVehicles;
         public int ProtectionTime;
         public int MaxProtectionVanishTime;
         public string ProtectionMessageColor;
@@ -21,7 +23,9 @@ namespace RocketModSpawnProtection
         {
             GiveVanishWhileProtected = true;
             CancelProtectionOnEquip = true;
+            CancelProtectionIfInVehicleWithOthers = true;
             GiveProtectionOnJoin = false;
+            AutoRepairProtectedPlayersVehicles = true;
             ProtectionTime = 30;
             MaxProtectionVanishTime = 6;
             ProtectionMessageColor = "Yellow";

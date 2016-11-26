@@ -65,6 +65,7 @@ namespace RocketModSpawnProtection
                     {"prot_started", "You have spawn protection for {0} seconds!"},
                     {"canceled_item", "Your spawn protection expired because you equipted a item!"},
                     {"expired", "Your spawn protection expired!"},
+                    {"canceled_veh", "Your spawn protection expired because you are in a vehicle with others!"},
                     {"admin_prot_enabled", "Enabled protection on {0}!"},
                     {"admin_prot_disabled", "Disabled protection on {0}!"},
                     {"usage_start", "Correct command usage: /pstart <player>"},

@@ -15,6 +15,7 @@ namespace RocketModSpawnProtection
         bool protectionEnded = false;
         bool equiptedItem = false;
         bool vanishExpired = false;
+        bool inVehicleWithOthers = false;
         //bool giveVanish;
         //bool cancelOnEquip;
 
@@ -49,9 +50,17 @@ namespace RocketModSpawnProtection
                     if (passenger.player != null) passengerCount++;
                 }
 
-                if (Player.CurrentVehicle.health < lastVehHealth && passengerCount == 1)
+                if (config.AutoRepairProtectedPlayersVehicles)
                 {
-                    Player.CurrentVehicle.askRepair(9999);
+                    if (Player.CurrentVehicle.health < lastVehHealth && passengerCount == 1)
+                    {
+                        Player.CurrentVehicle.askRepair(9999);
+                    } 
+                }
+
+                if (config.CancelProtectionIfInVehicleWithOthers && passengerCount > 1)
+                {
+                    inVehicleWithOthers = true;
                 }
 
                 lastVehHealth = Player.CurrentVehicle.health;
@@ -74,15 +83,24 @@ namespace RocketModSpawnProtection
                 protectionEnded = true;
             }
 
+            if (inVehicleWithOthers)
+            {
+                UnturnedChat.Say(Player, spawnProtection.Instance.Translate("canceled_veh"), spawnProtection.GetProtMsgColor());
+                StopProtection(false);
+                return;
+            }
+
             if (equiptedItem)
             {
                 UnturnedChat.Say(Player, spawnProtection.Instance.Translate("canceled_item"), spawnProtection.GetProtMsgColor());
                 StopProtection(false);
+                return;
             }
 
-            if (protectionEnded && !equiptedItem)
+            if (protectionEnded)
             {
                 StopProtection();
+                return;
             }
         }
 
@@ -141,6 +159,7 @@ namespace RocketModSpawnProtection
             passengerCount = 0;
             vanishExpired = false;
             elapsedProtectionTime = 0;
+            inVehicleWithOthers = false;
             //spawnLocation = Vector3.zero;
         }
 
