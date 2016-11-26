@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RocketModSpawnProtection</RootNamespace>
-    <AssemblyName>RocketModSpawnProtection</AssemblyName>
+    <AssemblyName>AdvancedSpawnProtection</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -63,7 +63,7 @@ namespace RocketModSpawnProtection
                 return new Rocket.API.Collections.TranslationList
                 {
                     {"prot_started", "You have spawn protection for {0} seconds!"},
-                    {"canceled_item", "Your spawn protection expire because you equipted a item!"},
+                    {"canceled_item", "Your spawn protection expired because you equipted a item!"},
                     {"expired", "Your spawn protection expired!"},
                     {"admin_prot_enabled", "Enabled protection on {0}!"},
                     {"admin_prot_disabled", "Disabled protection on {0}!"},
@@ -124,7 +124,7 @@ namespace RocketModSpawnProtection
             }
             else
             {
-                UnturnedChat.Say(caller, msg);
+                UnturnedChat.Say(caller, msg, GetCmdMsgColor());
             }
         }
 
@@ -143,13 +143,25 @@ namespace RocketModSpawnProtection
                     if (component.protectionEnabled)
                     {
                         component.StopProtection();
-                        UnturnedChat.Say(uP, Translate("expired"));
                     }
                 }
                 catch { }
             }
         }
 
-        
+        void SendCommandMessage(IRocketPlayer caller, string msg)
+        {
+            if (!(caller is ConsolePlayer)) UnturnedChat.Say(caller, msg);
+        }
+
+        UnityEngine.Color GetCmdMsgColor()
+        {
+            return UnturnedChat.GetColorFromName(Configuration.Instance.CommandMessageColor, UnityEngine.Color.green);
+        }
+
+        public static UnityEngine.Color GetProtMsgColor()
+        {
+            return UnturnedChat.GetColorFromName(spawnProtection.Instance.Configuration.Instance.ProtectionMessageColor, UnityEngine.Color.yellow);
+        }
     }
 }

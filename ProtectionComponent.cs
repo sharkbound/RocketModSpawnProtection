@@ -14,7 +14,6 @@ namespace RocketModSpawnProtection
         public bool protectionEnabled = false;
         bool protectionEnded = false;
         bool equiptedItem = false;
-        bool sentProtStartedMsg = false;
         bool vanishExpired = false;
         //bool giveVanish;
         //bool cancelOnEquip;
@@ -42,12 +41,6 @@ namespace RocketModSpawnProtection
             if (!Player.Features.GodMode) Player.Features.GodMode = true;
             if (config.GiveVanishWhileProtected && !vanishExpired && !Player.Features.VanishMode && elapsedProtectionTime >= 1) 
                 Player.Features.VanishMode = true;
-
-            if (!sentProtStartedMsg)
-            {
-                UnturnedChat.Say(Player, spawnProtection.Instance.Translate("prot_started", config.ProtectionTime));
-                sentProtStartedMsg = true;
-            }
 
             if (Player.CurrentVehicle != null)
             {
@@ -83,13 +76,12 @@ namespace RocketModSpawnProtection
 
             if (equiptedItem)
             {
-                UnturnedChat.Say(Player, spawnProtection.Instance.Translate("canceled_item"));
-                StopProtection();
+                UnturnedChat.Say(Player, spawnProtection.Instance.Translate("canceled_item"), spawnProtection.GetProtMsgColor());
+                StopProtection(false);
             }
 
             if (protectionEnded && !equiptedItem)
             {
-                UnturnedChat.Say(Player, spawnProtection.Instance.Translate("expired"));
                 StopProtection();
             }
         }
@@ -108,16 +100,23 @@ namespace RocketModSpawnProtection
         }
         */
 
-        public void StartProtection()
+        public void StartProtection(bool sendMessage = true)
         {
             ResetVariables();
 
             protectionEnabled = true;
             protStart = DateTime.Now;
             //spawnLocation = Player.Position;
+
+            if (sendMessage)
+            {
+                var protTime = getConfig().ProtectionTime;
+
+                UnturnedChat.Say(Player, spawnProtection.Instance.Translate("prot_started", protTime), spawnProtection.GetProtMsgColor());
+            }
         }
 
-        public void StopProtection()
+        public void StopProtection(bool sendMessage = true)
         {
             ResetVariables();
             Player.Features.GodMode = false;
@@ -125,6 +124,11 @@ namespace RocketModSpawnProtection
             if (getConfig().GiveVanishWhileProtected && Player.Features.VanishMode)
             {
                 Player.Features.VanishMode = false;
+            }
+
+            if (sendMessage)
+            {
+                UnturnedChat.Say(Player, spawnProtection.Instance.Translate("expired"), spawnProtection.GetProtMsgColor());
             }
         }
 
@@ -135,7 +139,6 @@ namespace RocketModSpawnProtection
             equiptedItem = false;
             lastVehHealth = 1337;
             passengerCount = 0;
-            sentProtStartedMsg = false;
             vanishExpired = false;
             elapsedProtectionTime = 0;
             //spawnLocation = Vector3.zero;

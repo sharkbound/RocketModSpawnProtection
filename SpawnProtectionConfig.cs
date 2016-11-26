@@ -13,6 +13,8 @@ namespace RocketModSpawnProtection
         public bool GiveProtectionOnJoin;
         public int ProtectionTime;
         public int MaxProtectionVanishTime;
+        public string ProtectionMessageColor;
+        public string CommandMessageColor;
        //public int MaxVanishDistFromSpawn;
 
         public void LoadDefaults()
@@ -22,6 +24,8 @@ namespace RocketModSpawnProtection
             GiveProtectionOnJoin = false;
             ProtectionTime = 30;
             MaxProtectionVanishTime = 3;
+            ProtectionMessageColor = "Yellow";
+            CommandMessageColor = "Green";
             //MaxVanishDistFromSpawn = 30;
         }
     }
