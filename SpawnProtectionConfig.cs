@@ -15,6 +15,7 @@ namespace RocketModSpawnProtection
         public bool AutoRepairProtectedPlayersVehicles;
         public int ProtectionTime;
         public int MaxProtectionVanishTime;
+        public double ProtectionVanishDelayMilliseconds;
         public string ProtectionMessageColor;
         public string CommandMessageColor;
        //public int MaxVanishDistFromSpawn;
@@ -28,6 +29,7 @@ namespace RocketModSpawnProtection
             AutoRepairProtectedPlayersVehicles = true;
             ProtectionTime = 30;
             MaxProtectionVanishTime = 6;
+            ProtectionVanishDelayMilliseconds = 1000;
             ProtectionMessageColor = "Yellow";
             CommandMessageColor = "Green";
             //MaxVanishDistFromSpawn = 30;

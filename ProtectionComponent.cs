@@ -29,6 +29,7 @@ namespace RocketModSpawnProtection
         //int maxProtTime;
         //int maxVanishTime;
         int elapsedProtectionTime = 0;
+        double elapsedProtectionMilliseconds = 0;
 
         //Vector3 spawnLocation;
 
@@ -37,11 +38,16 @@ namespace RocketModSpawnProtection
             if (!protectionEnabled && !pluginUnloaded()) return;
 
             var config = getConfig();
+
             elapsedProtectionTime = getTotalDateTimeSeconds(protStart);
+            elapsedProtectionMilliseconds = getTotalDateTimeMilliseconds(protStart);
 
             if (!Player.Features.GodMode) Player.Features.GodMode = true;
-            if (config.GiveVanishWhileProtected && !vanishExpired && !Player.Features.VanishMode && elapsedProtectionTime >= 1) 
+            if (config.GiveVanishWhileProtected && !vanishExpired && !Player.Features.VanishMode && elapsedProtectionMilliseconds >= config.ProtectionVanishDelayMilliseconds)
+            {
+                //UnturnedChat.Say(Player, "vanish enabled! " + elapsedProtectionMilliseconds.ToString() + " Milliseconds!");
                 Player.Features.VanishMode = true;
+            }
 
             if (Player.CurrentVehicle != null)
             {
@@ -69,6 +75,7 @@ namespace RocketModSpawnProtection
 
             if (config.GiveVanishWhileProtected && !vanishExpired && elapsedProtectionTime >= config.MaxProtectionVanishTime)
             {
+                //UnturnedChat.Say(Player, "vanish expired!");
                 Player.Features.VanishMode = false;
                 vanishExpired = true;
             }
@@ -159,6 +166,7 @@ namespace RocketModSpawnProtection
             passengerCount = 0;
             vanishExpired = false;
             elapsedProtectionTime = 0;
+            elapsedProtectionMilliseconds = 0;
             inVehicleWithOthers = false;
             //spawnLocation = Vector3.zero;
         }
@@ -166,6 +174,11 @@ namespace RocketModSpawnProtection
         int getTotalDateTimeSeconds(DateTime input)
         {
             return (int)(DateTime.Now - input).TotalSeconds;
+        }
+
+        double getTotalDateTimeMilliseconds(DateTime input)
+        {
+            return (DateTime.Now - input).TotalMilliseconds;
         }
 
         void log(string msg)
