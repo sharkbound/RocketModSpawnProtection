@@ -53,7 +53,10 @@ namespace RocketModSpawnProtection
 
         void UnturnedPlayerEvents_OnPlayerRevive(UnturnedPlayer player, UnityEngine.Vector3 position, byte angle)
         {
-            player.GetComponent<ProtectionComponent>().StartProtection();
+            if (Configuration.Instance.GiveProtectionOnRespawn)
+            {
+                player.GetComponent<ProtectionComponent>().StartProtection(); 
+            }
         }
 
         public override Rocket.API.Collections.TranslationList DefaultTranslations
