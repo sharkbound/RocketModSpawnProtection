@@ -206,6 +206,32 @@ namespace RocketModSpawnProtection
                     return false;
             }
         }
+    
+        void UnturnedPlayerEvents_OnPlayerUpdateGesture(UnturnedPlayer player, Rocket.Unturned.Events.UnturnedPlayerEvents.PlayerGesture gesture)
+        {
+            if (player.CSteamID == Player.CSteamID)
+            {
+                if (gesture == Rocket.Unturned.Events.UnturnedPlayerEvents.PlayerGesture.PunchLeft
+                    || gesture == Rocket.Unturned.Events.UnturnedPlayerEvents.PlayerGesture.PunchRight)
+                {
+                    if (protectionEnabled)
+                    {
+                        StopProtection(false);
+                        UnturnedChat.Say(Player, spawnProtection.Instance.Translate("canceled_punch"), spawnProtection.GetProtMsgColor());
+                    }
+                }
+            }
+        }
+
+        protected override void Load()
+        {
+            Rocket.Unturned.Events.UnturnedPlayerEvents.OnPlayerUpdateGesture += UnturnedPlayerEvents_OnPlayerUpdateGesture;
+        }
+
+        protected override void Unload()
+        {
+            Rocket.Unturned.Events.UnturnedPlayerEvents.OnPlayerUpdateGesture -= UnturnedPlayerEvents_OnPlayerUpdateGesture;
+        }
 
     }
 }

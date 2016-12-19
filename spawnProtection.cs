@@ -73,7 +73,8 @@ namespace RocketModSpawnProtection
                     {"admin_prot_disabled", "Disabled protection on {0}!"},
                     {"usage_start", "Correct command usage: /pstart <player>"},
                     {"usage_stop", "Correct command usage: /pstop <player>"},
-                    {"noplayer", "Player '{0}' not found!"}
+                    {"noplayer", "Player '{0}' not found!"},
+                    {"canceled_punch", "Your spawn protection expired because you punched!"}
                 };
             }
         }
