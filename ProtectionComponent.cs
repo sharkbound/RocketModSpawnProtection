@@ -7,6 +7,7 @@ using Rocket.Unturned.Player;
 using UnityEngine;
 using Rocket.Unturned.Chat;
 
+
 namespace RocketModSpawnProtection
 {
     public class ProtectionComponent : UnturnedPlayerComponent
@@ -61,7 +62,7 @@ namespace RocketModSpawnProtection
                     if (Player.CurrentVehicle.health < lastVehHealth && passengerCount == 1)
                     {
                         Player.CurrentVehicle.askRepair(9999);
-                    } 
+                    }
                 }
 
                 if (config.CancelProtectionIfInVehicleWithOthers && passengerCount > 1)
@@ -82,7 +83,10 @@ namespace RocketModSpawnProtection
 
             if (config.CancelProtectionOnEquip && Player.Player.equipment.asset != null)
             {
-                equiptedItem = true;
+                if (!config.WhitelistedItems.Contains(Player.Player.equipment.asset.id))
+                {
+                    equiptedItem = true;
+                }
             }
 
             if (elapsedProtectionTime >= config.ProtectionTime)
@@ -206,7 +210,7 @@ namespace RocketModSpawnProtection
                     return false;
             }
         }
-    
+
         void UnturnedPlayerEvents_OnPlayerUpdateGesture(UnturnedPlayer player, Rocket.Unturned.Events.UnturnedPlayerEvents.PlayerGesture gesture)
         {
             if (player.CSteamID == Player.CSteamID)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Rocket.API;
+using System.Xml.Serialization;
 
 namespace RocketModSpawnProtection
 {
@@ -19,6 +20,9 @@ namespace RocketModSpawnProtection
         public double ProtectionVanishDelayMilliseconds;
         public string ProtectionMessageColor;
         public string CommandMessageColor;
+
+        [XmlArrayItem(ElementName = "ID")]
+        public List<ushort> WhitelistedItems;
        //public int MaxVanishDistFromSpawn;
 
         public void LoadDefaults()
@@ -34,6 +38,8 @@ namespace RocketModSpawnProtection
             ProtectionVanishDelayMilliseconds = 1000;
             ProtectionMessageColor = "Yellow";
             CommandMessageColor = "Green";
+
+            WhitelistedItems = new List<ushort> { ushort.MaxValue-1 };
             //MaxVanishDistFromSpawn = 30;
         }
     }
