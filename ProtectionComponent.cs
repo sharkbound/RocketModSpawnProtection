@@ -96,15 +96,21 @@ namespace RocketModSpawnProtection
 
             if (inVehicleWithOthers)
             {
-                UnturnedChat.Say(Player, spawnProtection.Instance.Translate("canceled_veh"), spawnProtection.GetProtMsgColor());
                 StopProtection(false);
+
+                if (!config.SendProtectionMessages) return;
+                UnturnedChat.Say(Player, spawnProtection.Instance.Translate("canceled_veh"), spawnProtection.GetProtMsgColor());
+                
                 return;
             }
 
             if (equiptedItem)
             {
-                UnturnedChat.Say(Player, spawnProtection.Instance.Translate("canceled_item"), spawnProtection.GetProtMsgColor());
                 StopProtection(false);
+
+                if (!config.SendProtectionMessages) return;
+                UnturnedChat.Say(Player, spawnProtection.Instance.Translate("canceled_item"), spawnProtection.GetProtMsgColor());
+
                 return;
             }
 
@@ -135,11 +141,12 @@ namespace RocketModSpawnProtection
 
             protectionEnabled = true;
             protStart = DateTime.Now;
+            var config = getConfig();
             //spawnLocation = Player.Position;
 
-            if (sendMessage)
+            if (sendMessage && config.SendProtectionMessages)
             {
-                var protTime = getConfig().ProtectionTime;
+                var protTime = config.ProtectionTime;
 
                 UnturnedChat.Say(Player, spawnProtection.Instance.Translate("prot_started", protTime), spawnProtection.GetProtMsgColor());
             }
@@ -149,13 +156,14 @@ namespace RocketModSpawnProtection
         {
             ResetVariables();
             Player.Features.GodMode = false;
+            var config = getConfig();
 
-            if (getConfig().GiveVanishWhileProtected && Player.Features.VanishMode)
+            if (config.GiveVanishWhileProtected && Player.Features.VanishMode)
             {
                 Player.Features.VanishMode = false;
             }
 
-            if (sendMessage)
+            if (sendMessage && config.SendProtectionMessages)
             {
                 UnturnedChat.Say(Player, spawnProtection.Instance.Translate("expired"), spawnProtection.GetProtMsgColor());
             }
@@ -221,6 +229,8 @@ namespace RocketModSpawnProtection
                     if (protectionEnabled)
                     {
                         StopProtection(false);
+
+                        if (!getConfig().SendProtectionMessages) return;
                         UnturnedChat.Say(Player, spawnProtection.Instance.Translate("canceled_punch"), spawnProtection.GetProtMsgColor());
                     }
                 }

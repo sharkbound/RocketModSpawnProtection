@@ -15,6 +15,7 @@ namespace RocketModSpawnProtection
         public bool GiveProtectionOnJoin;
         public bool GiveProtectionOnRespawn;
         public bool AutoRepairProtectedPlayersVehicles;
+        public bool SendProtectionMessages;
         public int ProtectionTime;
         public int MaxProtectionVanishTime;
         public double ProtectionVanishDelayMilliseconds;
@@ -33,6 +34,7 @@ namespace RocketModSpawnProtection
             GiveProtectionOnJoin = false;
             GiveProtectionOnRespawn = true;
             AutoRepairProtectedPlayersVehicles = true;
+            SendProtectionMessages = true;
             ProtectionTime = 30;
             MaxProtectionVanishTime = 6;
             ProtectionVanishDelayMilliseconds = 1000;
