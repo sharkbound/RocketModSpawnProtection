@@ -74,12 +74,13 @@ namespace RocketModSpawnProtection
                     {"usage_start", "Correct command usage: /pstart <player>"},
                     {"usage_stop", "Correct command usage: /pstop <player>"},
                     {"noplayer", "Player '{0}' not found!"},
-                    {"canceled_punch", "Your spawn protection expired because you punched!"}
+                    {"canceled_punch", "Your spawn protection expired because you punched!"},
+                    {"canceled_dist", "Your protection has expired because of moving away from spawn!" }
                 };
             }
         }
 
-        [RocketCommand("startprot", "Manually enables spawnprotection on a player", "<player>", Rocket.API.AllowedCaller.Both)]
+        [RocketCommand("startprot", "Manually enables spawnprotection on a player", "<player>", AllowedCaller.Both)]
         [RocketCommandAlias("pstart")]
         public void EnableProtCMD(IRocketPlayer caller, string[] command)
         {
@@ -100,7 +101,7 @@ namespace RocketModSpawnProtection
             sendMSG(caller, Translate("admin_prot_enabled", uP.DisplayName));
         }
 
-        [RocketCommand("stopprot", "Manually disables spawnprotection on a player", "<player>", Rocket.API.AllowedCaller.Both)]
+        [RocketCommand("stopprot", "Manually disables spawnprotection on a player", "<player>", AllowedCaller.Both)]
         [RocketCommandAlias("pstop")]
         public void DisableProtCMD(IRocketPlayer caller, string[] command)
         {

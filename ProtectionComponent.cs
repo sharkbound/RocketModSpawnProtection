@@ -6,6 +6,7 @@ using Rocket.Unturned;
 using Rocket.Unturned.Player;
 using UnityEngine;
 using Rocket.Unturned.Chat;
+using Rocket.Unturned.Events;
 
 
 namespace RocketModSpawnProtection
@@ -17,26 +18,23 @@ namespace RocketModSpawnProtection
         bool equiptedItem = false;
         bool vanishExpired = false;
         bool inVehicleWithOthers = false;
-        //bool giveVanish;
-        //bool cancelOnEquip;
+        bool distanceCanceled = false;
+        bool spawnSet = false;
 
         DateTime protStart;
 
         ushort lastVehHealth = 1337;
 
-        //float disableVanishDist;
-
         int passengerCount = 0;
-        //int maxProtTime;
-        //int maxVanishTime;
         int elapsedProtectionTime = 0;
         double elapsedProtectionMilliseconds = 0;
 
-        //Vector3 spawnLocation;
+        Vector3 spawnPosition;
+        Vector3 lastPosition = Vector3.zero;
 
         public void Update()
         {
-            if (!protectionEnabled && !pluginUnloaded()) return;
+            if (!protectionEnabled || pluginUnloaded()) return;
 
             var config = getConfig();
 
@@ -48,6 +46,24 @@ namespace RocketModSpawnProtection
             {
                 //UnturnedChat.Say(Player, "vanish enabled! " + elapsedProtectionMilliseconds.ToString() + " Milliseconds!");
                 Player.Features.VanishMode = true;
+            }
+
+            if (config.DisableProtectionBasedOnDist)
+            {
+
+                if (spawnSet)
+                {
+                    if (Vector3.Distance(spawnPosition, Player.Position) >= config.ProtDisableDist)
+                    {
+                        distanceCanceled = true;
+                    }
+                }
+
+                if (!spawnSet && elapsedProtectionMilliseconds >= config.SpawnPositionGetDelay)
+                {
+                    spawnPosition = Player.Position;
+                    spawnSet = true;
+                }
             }
 
             if (Player.CurrentVehicle != null)
@@ -98,19 +114,23 @@ namespace RocketModSpawnProtection
             {
                 StopProtection(false);
 
-                if (!config.SendProtectionMessages) return;
-                UnturnedChat.Say(Player, spawnProtection.Instance.Translate("canceled_veh"), spawnProtection.GetProtMsgColor());
-                
+                //if (!config.sendprotectionmessages) return;
+                //unturnedchat.say(player, spawnprotection.instance.translate("canceled_veh"), spawnprotection.getprotmsgcolor());
+                sendTranslation("canceled_veh");
                 return;
             }
 
             if (equiptedItem)
             {
                 StopProtection(false);
+                sendTranslation("canceled_item");
+                return;
+            }
 
-                if (!config.SendProtectionMessages) return;
-                UnturnedChat.Say(Player, spawnProtection.Instance.Translate("canceled_item"), spawnProtection.GetProtMsgColor());
-
+            if (distanceCanceled)
+            {
+                StopProtection(false);
+                sendTranslation("canceled_dist");
                 return;
             }
 
@@ -120,20 +140,6 @@ namespace RocketModSpawnProtection
                 return;
             }
         }
-
-        /*
-        protected override void Load()
-        {
-            ResetVariables();
-
-            giveVanish = spawnProtection.Instance.Configuration.Instance.GiveVanishWhileProtected;
-            maxProtTime = spawnProtection.Instance.Configuration.Instance.ProtectionTime;
-            maxVanishTime = spawnProtection.Instance.Configuration.Instance.MaxProtectionVanishTime;
-            //disableVanishDist = spawnProtection.Instance.Configuration.Instance.MaxVanishDistFromSpawn;
-            cancelOnEquip = spawnProtection.Instance.Configuration.Instance.CancelProtectionOnEquip;
-            log(string.Format("{0} {1} {2} {3}", giveVanish, cancelOnEquip, maxProtTime, maxVanishTime));
-        }
-        */
 
         public void StartProtection(bool sendMessage = true)
         {
@@ -146,9 +152,7 @@ namespace RocketModSpawnProtection
 
             if (sendMessage && config.SendProtectionMessages)
             {
-                var protTime = config.ProtectionTime;
-
-                UnturnedChat.Say(Player, spawnProtection.Instance.Translate("prot_started", protTime), spawnProtection.GetProtMsgColor());
+                UnturnedChat.Say(Player, spawnProtection.Instance.Translate("prot_started", config.ProtectionTime), spawnProtection.GetProtMsgColor());
             }
         }
 
@@ -180,6 +184,9 @@ namespace RocketModSpawnProtection
             elapsedProtectionTime = 0;
             elapsedProtectionMilliseconds = 0;
             inVehicleWithOthers = false;
+            spawnSet = false;
+            spawnPosition = Vector3.zero;
+            distanceCanceled = false;
             //spawnLocation = Vector3.zero;
         }
 
@@ -219,12 +226,12 @@ namespace RocketModSpawnProtection
             }
         }
 
-        void UnturnedPlayerEvents_OnPlayerUpdateGesture(UnturnedPlayer player, Rocket.Unturned.Events.UnturnedPlayerEvents.PlayerGesture gesture)
+        void UnturnedPlayerEvents_OnPlayerUpdateGesture(UnturnedPlayer player, UnturnedPlayerEvents.PlayerGesture gesture)
         {
             if (player.CSteamID == Player.CSteamID)
             {
-                if (gesture == Rocket.Unturned.Events.UnturnedPlayerEvents.PlayerGesture.PunchLeft
-                    || gesture == Rocket.Unturned.Events.UnturnedPlayerEvents.PlayerGesture.PunchRight)
+                if (gesture == UnturnedPlayerEvents.PlayerGesture.PunchLeft
+                    || gesture == UnturnedPlayerEvents.PlayerGesture.PunchRight)
                 {
                     if (protectionEnabled)
                     {
@@ -237,15 +244,45 @@ namespace RocketModSpawnProtection
             }
         }
 
+        private void UnturnedPlayerEvents_OnPlayerUpdatePosition(UnturnedPlayer player, Vector3 position)
+        {
+            if (player.CSteamID != Player.CSteamID || protectionEnabled) return;
+
+            if (lastPosition == Vector3.zero)
+                lastPosition = Player.Position;
+
+            if (Vector3.Distance(lastPosition, Player.Position) >= getConfig().ProtEnableDist)
+            {
+                StartProtection();
+            }
+
+            lastPosition = Player.Position;
+        }
+
+        void sendTranslation(string translation, params object[] args)
+        {
+            if (!getConfig().SendProtectionMessages) return;
+            UnturnedChat.Say(Player, spawnProtection.Instance.Translate(translation, args), spawnProtection.GetProtMsgColor());
+        }
+
         protected override void Load()
         {
-            Rocket.Unturned.Events.UnturnedPlayerEvents.OnPlayerUpdateGesture += UnturnedPlayerEvents_OnPlayerUpdateGesture;
+            UnturnedPlayerEvents.OnPlayerUpdateGesture += UnturnedPlayerEvents_OnPlayerUpdateGesture;
+            if (getConfig().EnableProtectionBasedOnDist)
+            {
+                UnturnedPlayerEvents.OnPlayerUpdatePosition += UnturnedPlayerEvents_OnPlayerUpdatePosition;
+
+            }
         }
 
         protected override void Unload()
         {
-            Rocket.Unturned.Events.UnturnedPlayerEvents.OnPlayerUpdateGesture -= UnturnedPlayerEvents_OnPlayerUpdateGesture;
-        }
+            UnturnedPlayerEvents.OnPlayerUpdateGesture -= UnturnedPlayerEvents_OnPlayerUpdateGesture;
+            if (getConfig().EnableProtectionBasedOnDist)
+            {
+                UnturnedPlayerEvents.OnPlayerUpdatePosition -= UnturnedPlayerEvents_OnPlayerUpdatePosition;
 
+            }
+        }
     }
 }
