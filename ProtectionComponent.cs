@@ -97,11 +97,15 @@ namespace RocketModSpawnProtection
                 vanishExpired = true;
             }
 
-            if (config.CancelProtectionOnEquip && Player.Player.equipment.asset != null)
+            if (Player.Player.equipment.asset != null)
             {
-                if (!config.WhitelistedItems.Contains(Player.Player.equipment.asset.id))
+                if (!config.ForceDequipWhileProtected && config.CancelProtectionOnEquip && !config.WhitelistedItems.Contains(Player.Player.equipment.asset.id))
                 {
                     equiptedItem = true;
+                }
+                else if (config.ForceDequipWhileProtected)
+                {
+                    Player.Player.equipment.dequip();
                 }
             }
 
@@ -113,9 +117,6 @@ namespace RocketModSpawnProtection
             if (inVehicleWithOthers)
             {
                 StopProtection(false);
-
-                //if (!config.sendprotectionmessages) return;
-                //unturnedchat.say(player, spawnprotection.instance.translate("canceled_veh"), spawnprotection.getprotmsgcolor());
                 sendTranslation("canceled_veh");
                 return;
             }

@@ -16,6 +16,7 @@ namespace RocketModSpawnProtection
         public bool GiveProtectionOnRespawn;
         public bool AutoRepairProtectedPlayersVehicles;
         public bool SendProtectionMessages;
+        public bool ForceDequipWhileProtected;
         public bool EnableProtectionBasedOnDist;
         public bool DisableProtectionBasedOnDist;
         public int ProtDisableDist;
@@ -40,6 +41,7 @@ namespace RocketModSpawnProtection
             GiveProtectionOnRespawn = true;
             AutoRepairProtectedPlayersVehicles = true;
             SendProtectionMessages = true;
+            ForceDequipWhileProtected = false;
             EnableProtectionBasedOnDist = false;
             DisableProtectionBasedOnDist = false;
             ProtDisableDist = 100;
