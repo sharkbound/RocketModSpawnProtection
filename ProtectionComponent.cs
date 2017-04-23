@@ -153,7 +153,7 @@ namespace RocketModSpawnProtection
 
             if (sendMessage && config.SendProtectionMessages)
             {
-                UnturnedChat.Say(Player, spawnProtection.Instance.Translate("prot_started", config.ProtectionTime), spawnProtection.GetProtMsgColor());
+                UnturnedChat.Say(Player, SpawnProtection.Instance.Translate("prot_started", config.ProtectionTime), SpawnProtection.GetProtMsgColor());
             }
         }
 
@@ -170,7 +170,7 @@ namespace RocketModSpawnProtection
 
             if (sendMessage && config.SendProtectionMessages)
             {
-                UnturnedChat.Say(Player, spawnProtection.Instance.Translate("expired"), spawnProtection.GetProtMsgColor());
+                UnturnedChat.Say(Player, SpawnProtection.Instance.Translate("expired"), SpawnProtection.GetProtMsgColor());
             }
         }
 
@@ -208,12 +208,12 @@ namespace RocketModSpawnProtection
 
         SpawnProtectionConfig getConfig()
         {
-            return spawnProtection.Instance.Configuration.Instance;
+            return SpawnProtection.Instance.Configuration.Instance;
         }
 
         bool pluginUnloaded()
         {
-            var state = spawnProtection.Instance.State;
+            var state = SpawnProtection.Instance.State;
             switch (state)
             {
                 case Rocket.API.PluginState.Cancelled:
@@ -239,7 +239,7 @@ namespace RocketModSpawnProtection
                         StopProtection(false);
 
                         if (!getConfig().SendProtectionMessages) return;
-                        UnturnedChat.Say(Player, spawnProtection.Instance.Translate("canceled_punch"), spawnProtection.GetProtMsgColor());
+                        UnturnedChat.Say(Player, SpawnProtection.Instance.Translate("canceled_punch"), SpawnProtection.GetProtMsgColor());
                     }
                 }
             }
@@ -263,7 +263,7 @@ namespace RocketModSpawnProtection
         void sendTranslation(string translation, params object[] args)
         {
             if (!getConfig().SendProtectionMessages) return;
-            UnturnedChat.Say(Player, spawnProtection.Instance.Translate(translation, args), spawnProtection.GetProtMsgColor());
+            UnturnedChat.Say(Player, SpawnProtection.Instance.Translate(translation, args), SpawnProtection.GetProtMsgColor());
         }
 
         protected override void Load()

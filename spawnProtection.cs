@@ -7,19 +7,20 @@ using Rocket.API;
 using Rocket.Core;
 using Rocket.Unturned;
 using Rocket.Core.Plugins;
-using Rocket.Core.Logging;
+using Logger = Rocket.Core.Logging.Logger;
 using Rocket.Unturned.Player;
 using Rocket.Unturned.Events;
 using Rocket.Unturned.Chat;
 using SDG.Unturned;
 using Steamworks;
 using Rocket.Core.Commands;
+using UnityEngine;
 
 namespace RocketModSpawnProtection
 {
-    public class spawnProtection : RocketPlugin<SpawnProtectionConfig>
+    public class SpawnProtection : RocketPlugin<SpawnProtectionConfig>
     {
-        public static spawnProtection Instance;
+        public static SpawnProtection Instance;
 
         protected override void Load()
         {
@@ -51,12 +52,20 @@ namespace RocketModSpawnProtection
         }
 
 
-        void UnturnedPlayerEvents_OnPlayerRevive(UnturnedPlayer player, UnityEngine.Vector3 position, byte angle)
+        void UnturnedPlayerEvents_OnPlayerRevive(UnturnedPlayer player, Vector3 position, byte angle)
         {
-            if (Configuration.Instance.GiveProtectionOnRespawn)
+            if (!Configuration.Instance.GiveProtectionOnRespawn || player == null)
+                return;
+
+            if (Configuration.Instance.CancelOnBedRespawn 
+                && BarricadeManager.tryGetBed(player.CSteamID, out Vector3 bedPos, out byte bedAngle)
+                && Vector3.Distance(bedPos, player.Position) < 10)
             {
-                player.GetComponent<ProtectionComponent>().StartProtection(); 
+                    UnturnedChat.Say(player, Translate("canceled_bedrespawn"), UnturnedChat.GetColorFromName(Configuration.Instance.ProtectionMessageColor, Color.red));
+                    return;
             }
+
+            player.GetComponent<ProtectionComponent>().StartProtection();
         }
 
         public override Rocket.API.Collections.TranslationList DefaultTranslations
@@ -75,7 +84,8 @@ namespace RocketModSpawnProtection
                     {"usage_stop", "Correct command usage: /pstop <player>"},
                     {"noplayer", "Player '{0}' not found!"},
                     {"canceled_punch", "Your spawn protection expired because you punched!"},
-                    {"canceled_dist", "Your protection has expired because of moving away from spawn!" }
+                    {"canceled_dist", "Your protection has expired because of moving away from spawn!" },
+                    {"canceled_bedrespawn", "You were not giving spawnprotection due to spawning at your bed"}
                 };
             }
         }
@@ -167,7 +177,7 @@ namespace RocketModSpawnProtection
 
         public static UnityEngine.Color GetProtMsgColor()
         {
-            return UnturnedChat.GetColorFromName(spawnProtection.Instance.Configuration.Instance.ProtectionMessageColor, UnityEngine.Color.yellow);
+            return UnturnedChat.GetColorFromName(SpawnProtection.Instance.Configuration.Instance.ProtectionMessageColor, UnityEngine.Color.yellow);
         }
     }
 }
