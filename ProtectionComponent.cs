@@ -35,11 +35,17 @@ namespace RocketModSpawnProtection
         public void Update()
         {
             if (!protectionEnabled || pluginUnloaded()) return;
-
-            var config = getConfig();
-
+            
             elapsedProtectionTime = getTotalDateTimeSeconds(protStart);
             elapsedProtectionMilliseconds = getTotalDateTimeMilliseconds(protStart);
+
+            if (elapsedProtectionMilliseconds <= 300 && SpawnProtection.CheckIfNearBed(Player))
+            {
+                StopProtection(sendMessage: false);
+                return;
+            }
+
+            var config = getConfig();
 
             if (!Player.Features.GodMode) Player.Features.GodMode = true;
             if (config.GiveVanishWhileProtected && !vanishExpired && !Player.Features.VanishMode && elapsedProtectionMilliseconds >= config.ProtectionVanishDelayMilliseconds)

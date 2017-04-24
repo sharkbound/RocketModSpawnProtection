@@ -4,7 +4,6 @@ C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketMo
 C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\bin\Debug\Rocket.Core.dll
 C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\bin\Debug\Rocket.Unturned.dll
 C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\bin\Debug\UnityEngine.dll
-C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\obj\Debug\RocketModSpawnProtection.csprojResolveAssemblyReference.cache
 C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\bin\Debug\AdvancedSpawnProtection.dll
 C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\bin\Debug\AdvancedSpawnProtection.pdb
 C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\obj\Debug\AdvancedSpawnProtection.dll

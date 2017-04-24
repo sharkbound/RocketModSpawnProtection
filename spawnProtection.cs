@@ -57,14 +57,6 @@ namespace RocketModSpawnProtection
             if (!Configuration.Instance.GiveProtectionOnRespawn || player == null)
                 return;
 
-            if (Configuration.Instance.CancelOnBedRespawn 
-                && BarricadeManager.tryGetBed(player.CSteamID, out Vector3 bedPos, out byte bedAngle)
-                && Vector3.Distance(bedPos, player.Position) < 10)
-            {
-                    UnturnedChat.Say(player, Translate("canceled_bedrespawn"), UnturnedChat.GetColorFromName(Configuration.Instance.ProtectionMessageColor, Color.red));
-                    return;
-            }
-
             player.GetComponent<ProtectionComponent>().StartProtection();
         }
 
@@ -178,6 +170,21 @@ namespace RocketModSpawnProtection
         public static UnityEngine.Color GetProtMsgColor()
         {
             return UnturnedChat.GetColorFromName(SpawnProtection.Instance.Configuration.Instance.ProtectionMessageColor, UnityEngine.Color.yellow);
+        }
+
+        internal static bool CheckIfNearBed(UnturnedPlayer player)
+        {
+            if (Instance.Configuration.Instance.CancelOnBedRespawn)
+            {
+                byte bedAngle;
+                Vector3 bedPos;
+                if (BarricadeManager.tryGetBed(player.CSteamID, out bedPos, out bedAngle) && Vector3.Distance(bedPos, player.Position) < 15)
+                {
+                    UnturnedChat.Say(player, Instance.Translate("canceled_bedrespawn"), UnturnedChat.GetColorFromName(Instance.Configuration.Instance.ProtectionMessageColor, Color.red));
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
