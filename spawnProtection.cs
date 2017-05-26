@@ -26,7 +26,7 @@ namespace RocketModSpawnProtection
         {
             Instance = this;
 
-            UnturnedPlayerEvents.OnPlayerRevive += UnturnedPlayerEvents_OnPlayerRevive;
+            UnturnedPlayerEvents.OnPlayerRevive += OnRevive;
             U.Events.OnPlayerConnected += Events_OnPlayerConnected;
 
             Logger.Log("SpawnProtection loaded!");
@@ -34,6 +34,13 @@ namespace RocketModSpawnProtection
 
         void Events_OnPlayerConnected(UnturnedPlayer player)
         {
+            if (player == null) return;
+            if (IsExcluded(player.CSteamID.m_SteamID))
+            {
+                UnturnedChat.Say(player, Translate("protection_excluded"), Color.yellow);
+                return;
+            }
+
             if (Configuration.Instance.GiveProtectionOnJoin)
             {
                 player.GetComponent<ProtectionComponent>().StartProtection();
@@ -45,17 +52,23 @@ namespace RocketModSpawnProtection
         {
             Logger.Log("SpawnProtection Unloaded!");
 
-            UnturnedPlayerEvents.OnPlayerRevive -= UnturnedPlayerEvents_OnPlayerRevive;
+            UnturnedPlayerEvents.OnPlayerRevive -= OnRevive;
             U.Events.OnPlayerConnected -= Events_OnPlayerConnected;
 
             DisableAllPlayersSpawnProtection();
         }
 
 
-        void UnturnedPlayerEvents_OnPlayerRevive(UnturnedPlayer player, Vector3 position, byte angle)
+        void OnRevive(UnturnedPlayer player, Vector3 position, byte angle)
         {
             if (!Configuration.Instance.GiveProtectionOnRespawn || player == null)
                 return;
+
+            if (IsExcluded(player.CSteamID.m_SteamID))
+            {
+                UnturnedChat.Say(player, Translate("protection_excluded"), Color.yellow);
+                return;
+            }
 
             player.GetComponent<ProtectionComponent>().StartProtection();
         }
@@ -77,7 +90,10 @@ namespace RocketModSpawnProtection
                     {"noplayer", "Player '{0}' not found!"},
                     {"canceled_punch", "Your spawn protection expired because you punched!"},
                     {"canceled_dist", "Your protection has expired because of moving away from spawn!" },
-                    {"canceled_bedrespawn", "You were not giving spawnprotection due to spawning at your bed"}
+                    {"canceled_bedrespawn", "You were not giving spawnprotection due to spawning at your bed"},
+                    {"protection_excluded", "You have disabled spawnprotection for yourself, do /toggleprotection to enable again"},
+                    {"toggled_protection_on", "You will now receive spawn protection"},
+                    {"toggled_protection_off", "You will no longer receive spawn protection"}
                 };
             }
         }
@@ -185,6 +201,11 @@ namespace RocketModSpawnProtection
                 }
             }
             return false;
+        }
+
+        internal static bool IsExcluded(ulong id)
+        {
+            return Instance.Configuration.Instance.NoSpawnProtection.Contains(id);
         }
     }
 }

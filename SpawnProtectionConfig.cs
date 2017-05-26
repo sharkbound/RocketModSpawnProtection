@@ -31,7 +31,9 @@ namespace RocketModSpawnProtection
 
         [XmlArrayItem(ElementName = "ID")]
         public List<ushort> WhitelistedItems;
-       //public int MaxVanishDistFromSpawn;
+
+        [XmlArrayItem(ElementName = "steamid")]
+        public List<ulong> NoSpawnProtection;
 
         public void LoadDefaults()
         {
@@ -55,8 +57,8 @@ namespace RocketModSpawnProtection
             ProtectionMessageColor = "Yellow";
             CommandMessageColor = "Green";
 
-            WhitelistedItems = new List<ushort> { ushort.MaxValue-1 };
-            //MaxVanishDistFromSpawn = 30;
+            WhitelistedItems = new List<ushort> { ushort.MaxValue - 1 };
+            NoSpawnProtection = new List<ulong> { ulong.MaxValue - 1 };
         }
     }
 }
