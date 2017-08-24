@@ -21,6 +21,7 @@ namespace RocketModSpawnProtection
     public class SpawnProtection : RocketPlugin<SpawnProtectionConfig>
     {
         public static SpawnProtection Instance;
+        public static SpawnProtectionConfig Config => Instance.Configuration.Instance;
 
         protected override void Load()
         {

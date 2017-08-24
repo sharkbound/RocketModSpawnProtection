@@ -20,6 +20,7 @@ namespace RocketModSpawnProtection
         public bool ForceDequipWhileProtected;
         public bool EnableProtectionBasedOnDist;
         public bool DisableProtectionBasedOnDist;
+        public bool EnsureGodmodeWhileProtected;
         public int ProtDisableDist;
         public int ProtEnableDist;
         public int SpawnPositionGetDelay;
@@ -48,6 +49,7 @@ namespace RocketModSpawnProtection
             ForceDequipWhileProtected = false;
             EnableProtectionBasedOnDist = false;
             DisableProtectionBasedOnDist = false;
+            EnsureGodmodeWhileProtected = false;
             ProtDisableDist = 100;
             ProtEnableDist = 100;
             SpawnPositionGetDelay = 1100;

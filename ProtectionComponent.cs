@@ -47,7 +47,8 @@ namespace RocketModSpawnProtection
 
             var config = getConfig();
 
-            if (!Player.Features.GodMode) Player.Features.GodMode = true;
+            if (SpawnProtection.Config.EnsureGodmodeWhileProtected && !Player.Features.GodMode)
+                Player.Features.GodMode = true;
             if (config.GiveVanishWhileProtected && !vanishExpired && !Player.Features.VanishMode && elapsedProtectionMilliseconds >= config.ProtectionVanishDelayMilliseconds)
             {
                 //UnturnedChat.Say(Player, "vanish enabled! " + elapsedProtectionMilliseconds.ToString() + " Milliseconds!");
@@ -154,12 +155,13 @@ namespace RocketModSpawnProtection
 
             protectionEnabled = true;
             protStart = DateTime.Now;
-            var config = getConfig();
+
+            Player.GodMode = true;
             //spawnLocation = Player.Position;
 
-            if (sendMessage && config.SendProtectionMessages)
+            if (sendMessage && SpawnProtection.Config.SendProtectionMessages)
             {
-                UnturnedChat.Say(Player, SpawnProtection.Instance.Translate("prot_started", config.ProtectionTime), SpawnProtection.GetProtMsgColor());
+                UnturnedChat.Say(Player, SpawnProtection.Instance.Translate("prot_started", SpawnProtection.Config.ProtectionTime), SpawnProtection.GetProtMsgColor());
             }
         }
 
