@@ -8,3 +8,16 @@ C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketMo
 C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\bin\Debug\AdvancedSpawnProtection.pdb
 C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\obj\Debug\AdvancedSpawnProtection.dll
 C:\Users\owner\Desktop\GitHub\RocketModPlugins\RocketModSpawnProtection\RocketModSpawnProtection\obj\Debug\AdvancedSpawnProtection.pdb
+D:\git\plugins\RocketModSpawnProtection\bin\Debug\AdvancedSpawnProtection.dll
+D:\git\plugins\RocketModSpawnProtection\bin\Debug\AdvancedSpawnProtection.pdb
+D:\git\plugins\RocketModSpawnProtection\bin\Debug\Assembly-CSharp-firstpass.dll
+D:\git\plugins\RocketModSpawnProtection\bin\Debug\Assembly-CSharp.dll
+D:\git\plugins\RocketModSpawnProtection\bin\Debug\Rocket.API.dll
+D:\git\plugins\RocketModSpawnProtection\bin\Debug\Rocket.Core.dll
+D:\git\plugins\RocketModSpawnProtection\bin\Debug\Rocket.Unturned.dll
+D:\git\plugins\RocketModSpawnProtection\bin\Debug\UnityEngine.CoreModule.dll
+D:\git\plugins\RocketModSpawnProtection\bin\Debug\UnityEngine.dll
+D:\git\plugins\RocketModSpawnProtection\obj\Debug\RocketModSpawnProtection.csproj.CoreCompileInputs.cache
+D:\git\plugins\RocketModSpawnProtection\obj\Debug\RocketModSpawnProtection.csproj.CopyComplete
+D:\git\plugins\RocketModSpawnProtection\obj\Debug\AdvancedSpawnProtection.dll
+D:\git\plugins\RocketModSpawnProtection\obj\Debug\AdvancedSpawnProtection.pdb
