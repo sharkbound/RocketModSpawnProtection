@@ -21,3 +21,4 @@ D:\git\plugins\RocketModSpawnProtection\obj\Debug\RocketModSpawnProtection.cspro
 D:\git\plugins\RocketModSpawnProtection\obj\Debug\RocketModSpawnProtection.csproj.CopyComplete
 D:\git\plugins\RocketModSpawnProtection\obj\Debug\AdvancedSpawnProtection.dll
 D:\git\plugins\RocketModSpawnProtection\obj\Debug\AdvancedSpawnProtection.pdb
+D:\git\RocketModSpawnProtection\obj\Debug\RocketModSpawnProtection.csprojAssemblyReference.cache
